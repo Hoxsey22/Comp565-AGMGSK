@@ -44,49 +44,19 @@ namespace AGMGSKv7
     /// 2/8/2014 last changed
     /// </summary>
 
-    public class Treasure : Agent
+    public class Treasure : Model3D
     {
         private KeyboardState oldKeyboardState;
         private int rotate;
         private float angle;
         private Matrix initialOrientation;
 
-        public Treasure(Stage theStage, string label, Vector3 pos, Vector3 orientAxis,
-        float radians, string meshFile)
-            : base(theStage, label, pos, orientAxis, radians, meshFile)
-        {  // change names for on-screen display of current camera
-            first.Name = "Treasure - First";
-            follow.Name = "Treasure - Follow";
-            above.Name = "Treasure - Above";
+        public Treasure(Stage theStage, string label, string meshFile)
+            : base(theStage, label, meshFile)
+        {
             IsCollidable = true;  // players test collision with Collidable set.
-            stage.Collidable.Add(agentObject);  // player's agentObject can be collided with by others.
             rotate = 0;
             angle = 0.01f;
-            initialOrientation = agentObject.Orientation;
-        }
-
-        /// <summary>
-        /// Handle player input that affects the player.
-        /// See Stage.Update(...) for handling user input that affects
-        /// how the stage is rendered.
-        /// First check if gamepad is connected, if true use gamepad
-        /// otherwise assume and use keyboard.
-        /// </summary>
-        /// <param name="gameTime"></param>
-        public override void Update(GameTime gameTime)
-        {
-            KeyboardState keyboardState = Keyboard.GetState();
-            if (keyboardState.IsKeyDown(Keys.R) && !oldKeyboardState.IsKeyDown(Keys.R))
-                agentObject.Orientation = initialOrientation;
-            // allow more than one keyboardState to be pressed
-            if (keyboardState.IsKeyDown(Keys.Up)) agentObject.Step++;
-            if (keyboardState.IsKeyDown(Keys.Down)) agentObject.Step--;
-            if (keyboardState.IsKeyDown(Keys.Left)) rotate++;
-            if (keyboardState.IsKeyDown(Keys.Right)) rotate--;
-            oldKeyboardState = keyboardState;    // Update saved state.
-            agentObject.Yaw = rotate * angle;
-            base.Update(gameTime);
-            rotate = agentObject.Step = 0;
         }
     }
 }

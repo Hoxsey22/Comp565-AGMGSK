@@ -416,12 +416,6 @@ public class Stage : Game {
       player.IsCollidable = true; // test collisions for player
       Components.Add(player);
 
-      treasure = new Treasure(this, "Goal",
-         new Vector3(400 * spacing, terrain.surfaceHeight(400, 407), 407 * spacing),
-         new Vector3(0, 1, 0), 0.78f, "treasurechest");  // face looking diagonally across stage
-      treasure.IsCollidable = true; // test collisions for player
-      Components.Add(treasure);
-
       npAgent = new NPAgent(this, "Evader",
          new Vector3(490 * spacing, terrain.surfaceHeight(490, 450), 450 * spacing),
          new Vector3(0, 1, 0), 0.0f, "magentaAvatarV6");  // facing +Z
@@ -438,6 +432,12 @@ public class Stage : Game {
 		// create a Pack of 6 dogs centered at (450, 500) that is leaderless
 		Pack pack = new Pack(this, "dog", "dogV6", 6, 450, 430, null);
 		Components.Add(pack);
+        // create a treasure chest
+        Model3D treasure = new Model3D(this, "treasure", "treasurechest");
+        treasure.IsCollidable = true;  // must be set before addObject(...) and Model3D doesn't set it
+        treasure.addObject(new Vector3(400 * spacing,terrain.surfaceHeight(400, 400),400 * spacing),
+           new Vector3(0, 1, 0), 0.79f, new Vector3(100,100,100)); // , new Vector3(1, 4, 1));,
+        Components.Add(treasure);
       // ----------- OPTIONAL CONTENT HERE -----------------------
       // Load content for your project here
       // create a temple
