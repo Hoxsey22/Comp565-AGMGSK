@@ -432,11 +432,13 @@ public class Stage : Game {
 		// create a Pack of 6 dogs centered at (450, 500) that is leaderless
 		Pack pack = new Pack(this, "dog", "dogV6", 6, 450, 430, null);
 		Components.Add(pack);
+
         // create a treasure chest
         Model3D treasure = new Model3D(this, "treasure", "treasurechest");
         treasure.IsCollidable = true;  // must be set before addObject(...) and Model3D doesn't set it
         treasure.addObject(new Vector3(400 * spacing,terrain.surfaceHeight(400, 400),400 * spacing),
-           new Vector3(0, 1, 0), 0.79f, new Vector3(100,100,100)); // , new Vector3(1, 4, 1));,
+           new Vector3(0, 1, 0), 0.79f, new Vector3(100,100,100));
+       
         Components.Add(treasure);
       // ----------- OPTIONAL CONTENT HERE -----------------------
       // Load content for your project here
@@ -530,7 +532,11 @@ public class Stage : Game {
 
            else if (lerping == true)
                lerping = false;
-       }  
+       }
+       else if (keyboardState.IsKeyDown(Keys.N) && !oldKeyboardState.IsKeyDown(Keys.N))
+       {
+           npAgent.Path.InsertNextNode(400,400);
+       } 
 
        oldKeyboardState = keyboardState;    // Update saved state.
        base.Update(gameTime);  // update all GameComponents and DrawableGameComponents

@@ -81,7 +81,15 @@ public class NPAgent : Agent {
       agentObject.turnToFace(nextGoal.Translation);  // orient towards the first path goal
 		// set snapDistance to be a little larger than step * stepSize
 		snapDistance = (int) (1.5 * (agentObject.Step * agentObject.StepSize));
-      }   
+      }
+
+   public Path Path
+   {
+       get
+       {
+           return path;
+       }
+   }
 
    /// <summary>
    /// Simple path following.  If within "snap distance" of a the nextGoal (a NavNode) 
