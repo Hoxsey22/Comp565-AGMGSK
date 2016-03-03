@@ -103,6 +103,7 @@ public class Stage : Game {
    // Required entities -- all AGXNASK programs have a Player and Terrain
    protected Player player = null;
    protected NPAgent npAgent = null;
+   protected Treasure treasure = null;
    protected Terrain terrain = null;
    protected List<Object3D> collidable = null;
    // Screen display and other information variables
@@ -414,6 +415,13 @@ public class Stage : Game {
          new Vector3(0, 1, 0), 0.78f, "redAvatarV6");  // face looking diagonally across stage
       player.IsCollidable = true; // test collisions for player
       Components.Add(player);
+
+      treasure = new Treasure(this, "Goal",
+         new Vector3(400 * spacing, terrain.surfaceHeight(400, 407), 407 * spacing),
+         new Vector3(0, 1, 0), 0.78f, "treasurechest");  // face looking diagonally across stage
+      treasure.IsCollidable = true; // test collisions for player
+      Components.Add(treasure);
+
       npAgent = new NPAgent(this, "Evader",
          new Vector3(490 * spacing, terrain.surfaceHeight(490, 450), 450 * spacing),
          new Vector3(0, 1, 0), 0.0f, "magentaAvatarV6");  // facing +Z
