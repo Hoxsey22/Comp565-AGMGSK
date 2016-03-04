@@ -436,7 +436,7 @@ public class Stage : Game {
         // create a treasure chest
         Model3D treasure = new Model3D(this, "treasure", "treasurechest");
         treasure.IsCollidable = true;  // must be set before addObject(...) and Model3D doesn't set it
-        treasure.addObject(new Vector3(400 * spacing,terrain.surfaceHeight(400, 400),400 * spacing),
+        treasure.addObject(new Vector3(400 * spacing,terrain.surfaceHeight(400, 400)+50,400 * spacing),
            new Vector3(0, 1, 0), 0.79f, new Vector3(100,100,100));
        
         Components.Add(treasure);
