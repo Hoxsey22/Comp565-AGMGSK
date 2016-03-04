@@ -103,7 +103,7 @@ public class Stage : Game {
    // Required entities -- all AGXNASK programs have a Player and Terrain
    protected Player player = null;
    protected NPAgent npAgent = null;
-   protected Treasure treasure = null;
+   protected Treasure treasure;
    protected Terrain terrain = null;
    protected List<Object3D> collidable = null;
    // Screen display and other information variables
@@ -434,12 +434,13 @@ public class Stage : Game {
 		Components.Add(pack);
 
         // create a treasure chest
-        Model3D treasure = new Model3D(this, "treasure", "treasurechest");
-        treasure.IsCollidable = true;  // must be set before addObject(...) and Model3D doesn't set it
-        treasure.addObject(new Vector3(400 * spacing,terrain.surfaceHeight(400, 400),400 * spacing),
-          Vector3.Up, 0.79f, new Vector3(100, 100, 100));
-       
-        Components.Add(treasure);
+        
+       treasure = new Treasure(this, "treasure", "treasurechest",4);
+       Components.Add(treasure);
+
+
+
+
       // ----------- OPTIONAL CONTENT HERE -----------------------
       // Load content for your project here
       // create a temple
