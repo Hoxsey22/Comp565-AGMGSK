@@ -61,17 +61,16 @@ namespace AGMGSKv7
         public Treasure(Stage stage, string label, string meshFile, int nTreasure)
             : base(stage, label, meshFile)
         {
-            Random random = new Random();
-            addObject(new Vector3(447 * stage.Spacing, stage.Terrain.surfaceHeight(447, 453) + 50, 453 * stage.Spacing), Vector3.Up, 0.79f, new Vector3(100, 100, 100)); ;
-
+            random = new Random();
+            addObject(new Vector3(447 * stage.Spacing, stage.Terrain.surfaceHeight(447, 453) + 50, 453 * stage.Spacing), Vector3.Up, 0.79f, new Vector3(100, 100, 100));
             for (int i = 1; i < nTreasure; i++)
             {
                 int x = (128 + random.Next(256)) * stage.Spacing;  // 128 .. 384
                 int z = (128 + random.Next(256)) * stage.Spacing;
                 addObject(
                     new Vector3(x, stage.surfaceHeight(x, z) + 50, z),
-                    new Vector3(0, 1, 0), (random.Next(5)) * 0.01f,
-                    new Vector3(4 + random.Next(3), random.Next(4) + 1, 3 + random.Next(2)));
+                    new Vector3(0, 1, 0), 0.79f,
+                    new Vector3(100,100,100));
             }
         }
 

@@ -536,7 +536,10 @@ public class Stage : Game {
        }
        else if (keyboardState.IsKeyDown(Keys.N) && !oldKeyboardState.IsKeyDown(Keys.N))
        {
-           npAgent.newGoal(npAgent.Path.InsertNextNode(400,400));
+           // closest treasure
+           Vector3 ct = npAgent.FindClosestTreasure(treasure);
+           // sends the closest treasure X and Z to find mark the treasure
+           npAgent.newGoal(npAgent.Path.InsertNextNode((int)ct.X/spacing,(int) ct.Z/spacing));
        } 
 
        oldKeyboardState = keyboardState;    // Update saved state.

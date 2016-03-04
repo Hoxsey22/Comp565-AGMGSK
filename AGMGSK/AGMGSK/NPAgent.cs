@@ -90,10 +90,24 @@ public class NPAgent : Agent {
            return path;
        }
    }
+
    public void newGoal(NavNode newNode)
    {
        nextGoal = newNode;
    }
+
+    public Vector3 FindClosestTreasure(Treasure t)    {
+        int nTreasures = t.Instance.Count;
+        int closest = 0;
+        float [] distances = new float[nTreasures];
+        for (int i = 1; i < nTreasures; i++)
+        {
+            if (Vector3.Distance(this.agentObject.Translation, t.Instance[i].Translation) < Vector3.Distance(this.agentObject.Translation, t.Instance[closest].Translation))
+                closest = i;
+        }
+        return t.Instance[closest].Translation;
+
+    }
 
    /// <summary>
    /// Simple path following.  If within "snap distance" of a the nextGoal (a NavNode) 
