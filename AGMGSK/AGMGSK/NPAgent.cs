@@ -90,6 +90,10 @@ public class NPAgent : Agent {
            return path;
        }
    }
+   public void newGoal(NavNode newNode)
+   {
+       nextGoal = newNode;
+   }
 
    /// <summary>
    /// Simple path following.  If within "snap distance" of a the nextGoal (a NavNode) 

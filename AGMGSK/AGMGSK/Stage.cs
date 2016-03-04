@@ -436,8 +436,8 @@ public class Stage : Game {
         // create a treasure chest
         Model3D treasure = new Model3D(this, "treasure", "treasurechest");
         treasure.IsCollidable = true;  // must be set before addObject(...) and Model3D doesn't set it
-        treasure.addObject(new Vector3(400 * spacing,terrain.surfaceHeight(400, 400)+50,400 * spacing),
-           new Vector3(0, 1, 0), 0.79f, new Vector3(100,100,100));
+        treasure.addObject(new Vector3(400 * spacing,terrain.surfaceHeight(400, 400),400 * spacing),
+          Vector3.Up, 0.79f, new Vector3(100, 100, 100));
        
         Components.Add(treasure);
       // ----------- OPTIONAL CONTENT HERE -----------------------
@@ -535,7 +535,7 @@ public class Stage : Game {
        }
        else if (keyboardState.IsKeyDown(Keys.N) && !oldKeyboardState.IsKeyDown(Keys.N))
        {
-           npAgent.Path.InsertNextNode(400,400);
+           npAgent.newGoal(npAgent.Path.InsertNextNode(400,400));
        } 
 
        oldKeyboardState = keyboardState;    // Update saved state.

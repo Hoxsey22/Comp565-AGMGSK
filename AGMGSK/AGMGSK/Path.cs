@@ -151,13 +151,14 @@ public class Path : DrawableGameComponent {
          return n; }
       }
 
-   public void InsertNextNode(int nodeX, int nodeZ)
+   public NavNode InsertNextNode(int nodeX, int nodeZ)
    {
         int spacing = stage.Spacing;
         int x = nodeX;
 	    int z = nodeZ;
         node.Insert(nextNode, new NavNode(new Vector3(x * spacing, stage.Terrain.surfaceHeight(x, z), z * spacing),
                 NavNode.NavNodeEnum.WAYPOINT));
+        return node[nextNode];
    }
 
 
