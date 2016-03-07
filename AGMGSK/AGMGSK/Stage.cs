@@ -210,6 +210,10 @@ public class Stage : Game {
       set { yonFlag = value;
             if (yonFlag)  setProjection(yon);
             else setProjection(farYon); } }
+   public Treasure getTreasure
+   {
+       get { return treasure; }
+   }
 
    // Methods
 
@@ -539,7 +543,7 @@ public class Stage : Game {
            // closest treasure
            Vector3 ct = npAgent.FindClosestTreasure(treasure);
            // sends the closest treasure X and Z to find mark the treasure
-           npAgent.newGoal(npAgent.Path.InsertNextNode((int)ct.X/spacing,(int) ct.Z/spacing));
+           npAgent.newTreasureGoal(npAgent.Path.InsertNextNode((int)ct.X/spacing,(int) ct.Z/spacing));
        } 
 
        oldKeyboardState = keyboardState;    // Update saved state.

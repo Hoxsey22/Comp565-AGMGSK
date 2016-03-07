@@ -57,20 +57,22 @@ namespace AGMGSKv7
     public class Treasure : Model3D
     {
         private Random random;
+        private Vector3 scale = new Vector3(100);
+        private int heightSpacing = 75;
         // Constructor
         public Treasure(Stage stage, string label, string meshFile, int nTreasure)
             : base(stage, label, meshFile)
         {
             random = new Random();
-            addObject(new Vector3(447 * stage.Spacing, stage.Terrain.surfaceHeight(447, 453) + 50, 453 * stage.Spacing), Vector3.Up, 0.79f, new Vector3(100, 100, 100));
+            addObject(new Vector3(447 * stage.Spacing, stage.Terrain.surfaceHeight(447, 453) + heightSpacing, 453 * stage.Spacing), Vector3.Up, 0.79f, scale);
             for (int i = 1; i < nTreasure; i++)
             {
                 int x = (128 + random.Next(256)) * stage.Spacing;  // 128 .. 384
                 int z = (128 + random.Next(256)) * stage.Spacing;
                 addObject(
-                    new Vector3(x, stage.surfaceHeight(x, z) + 50, z),
-                    new Vector3(0, 1, 0), 0.79f,
-                    new Vector3(100,100,100));
+                    new Vector3(x, stage.surfaceHeight(x, z) + heightSpacing, z),
+                    Vector3.Up, 0.79f,
+                    scale);
             }
         }
 

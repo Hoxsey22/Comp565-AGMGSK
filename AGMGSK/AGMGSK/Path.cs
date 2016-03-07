@@ -127,6 +127,10 @@ public class Path : DrawableGameComponent {
 
    public bool Done { get { return done; }}
 
+    public List<NavNode> getNodes()   {
+        return node;
+    }
+
    /// <summary>
    /// Gets the next node in the path using path's PathType
    /// </summary>
@@ -159,6 +163,11 @@ public class Path : DrawableGameComponent {
         node.Insert(nextNode, new NavNode(new Vector3(x * spacing, stage.Terrain.surfaceHeight(x, z), z * spacing),
                 NavNode.NavNodeEnum.WAYPOINT));
         return node[nextNode];
+   }
+   public void removeNode(NavNode removeThisNode)
+   {
+       node.Remove(removeThisNode);
+       nextNode--;
    }
 
 

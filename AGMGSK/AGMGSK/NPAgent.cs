@@ -46,6 +46,8 @@ namespace AGMGSKv7 {
 public class NPAgent : Agent {
    private NavNode nextGoal;
    private Path path;
+   private NavNode treasureTarget;
+   private Object3D treasureTargetObject;
    private int snapDistance = 20;  // this should be a function of step and stepSize
 	// If using makePath(int[,]) set WayPoint (x, z) vertex positions in the following array
 	private int[,] pathNode = { {505, 490}, {500, 500}, {490, 505},  // bottom, right
@@ -91,9 +93,10 @@ public class NPAgent : Agent {
        }
    }
 
-   public void newGoal(NavNode newNode)
+   public void newTreasureGoal(NavNode newNode)
    {
        nextGoal = newNode;
+       treasureTarget = newNode;
    }
 
     public Vector3 FindClosestTreasure(Treasure t)    {
@@ -105,6 +108,7 @@ public class NPAgent : Agent {
             if (Vector3.Distance(this.agentObject.Translation, t.Instance[i].Translation) < Vector3.Distance(this.agentObject.Translation, t.Instance[closest].Translation))
                 closest = i;
         }
+        treasureTargetObject = t.Instance[closest];
         return t.Instance[closest].Translation;
 
     }
@@ -126,6 +130,11 @@ public class NPAgent : Agent {
 				nextGoal.Translation.X/stage.Spacing, nextGoal.Translation.Y, nextGoal.Translation.Z/stage.Spacing, distance) );
       if (distance  <= snapDistance)  {  
          // snap to nextGoal and orient toward the new nextGoal 
+          if(path.getNodes().IndexOf(nextGoal) > 0)  {
+              path.removeNode(nextGoal);
+              treasureTarget = null;
+              stage.getTreasure.Instance.Remove(treasureTargetObject);
+          }
          nextGoal = path.NextNode;
          // agentObject.turnToFace(nextGoal.Translation);
          }
