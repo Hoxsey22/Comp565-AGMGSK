@@ -130,9 +130,10 @@ public class NPAgent : Agent {
 				nextGoal.Translation.X/stage.Spacing, nextGoal.Translation.Y, nextGoal.Translation.Z/stage.Spacing, distance) );
       if (distance  <= snapDistance)  {  
          // snap to nextGoal and orient toward the new nextGoal 
-          if(path.getNodes().IndexOf(nextGoal) > 0)  {
+          if(nextGoal == treasureTarget)  {
               path.removeNode(nextGoal);
               treasureTarget = null;
+              treasureTargetObject = null;
               stage.getTreasure.Instance.Remove(treasureTargetObject);
           }
          nextGoal = path.NextNode;
