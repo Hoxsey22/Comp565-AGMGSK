@@ -132,9 +132,9 @@ public class NPAgent : Agent {
          // snap to nextGoal and orient toward the new nextGoal 
           if(nextGoal == treasureTarget)  {
               path.removeNode(nextGoal);
+              stage.getTreasure.Instance.Remove(treasureTargetObject);
               treasureTarget = null;
               treasureTargetObject = null;
-              stage.getTreasure.Instance.Remove(treasureTargetObject);
           }
          nextGoal = path.NextNode;
          // agentObject.turnToFace(nextGoal.Translation);
