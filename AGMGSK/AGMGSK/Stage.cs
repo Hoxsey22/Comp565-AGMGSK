@@ -292,6 +292,7 @@ public class Stage : Game {
 	/// <param name="anObject3D"> has  Translation.X and Translation.Y values</param>
    public void setSurfaceHeight(Object3D anObject3D) 
    {
+       //LERPING CODE
       float xY;
       float zY;
 
