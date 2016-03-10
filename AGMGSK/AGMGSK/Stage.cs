@@ -103,7 +103,12 @@ public class Stage : Game {
    // Required entities -- all AGXNASK programs have a Player and Terrain
    protected Player player = null;
    protected NPAgent npAgent = null;
+
+   //ADDED GLOBAL VARIABLES BY SIMON AND JOSEPH
    protected Treasure treasure;
+   protected Model3D building;
+   //END OF ADDED GLOBAL VARIABLES 
+
    protected Terrain terrain = null;
    protected List<Object3D> collidable = null;
    // Screen display and other information variables
@@ -442,7 +447,13 @@ public class Stage : Game {
        treasure = new Treasure(this, "treasure", "treasurechest",4);
        Components.Add(treasure);
 
+       // create building
 
+       
+       building = new Model3D(this, "building", "darkBuilding");
+       building.IsCollidable = true;
+       building.addObject(new Vector3(400 * spacing, terrain.surfaceHeight(400,400) + 1300, 430 * spacing), Vector3.Up, 4.3f, new Vector3(4300));
+       Components.Add(building);
 
 
       // ----------- OPTIONAL CONTENT HERE -----------------------
