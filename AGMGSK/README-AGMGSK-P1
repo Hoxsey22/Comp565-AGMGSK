@@ -1,0 +1,86 @@
+AGMGSK P1
+----------
+Author: Joseph Hoxsey & Simon Grigorian
+
+Description
+------------
+- Main goal of this project was to understand and modify an existing project based on the specifications of the project.
+
+Specifications
+---------------
+1. Designing a new scene using the color and height map. In addition, treasure models had to be created.
+2. Modifying terrian following by adding in lerping.
+3. NPAgents have a new state to find the nearest treasure.
+
+----------------------------------------------------------------------------------------------------------------------------------
+
+Changes to the project
+----------------------
+
+Stage.cs
+----------
+- Added building (Model3D), treasure (Treasure), lerping (bool) global objects
+- Modified the setSurfaceHeight method in order to complete the lerp specification.
+- Created a new Model3D object buildings and treasure object in LoadContent()
+- Added new button states:
+        - 'L' state to turn off and on lerping
+        - 'N' state to turn on treasure finding for the NPA
+
+NPAgent.cs
+-------
+- Added treasureTarget (NavNode), treasureTargetObject (Object3D) as a global in the class
+- Created new methods: 
+      - newTreasureGoal() - change next goal to the treasure node
+      - findClosestTreasure() - finds the nearest treasure and returns an Object3D
+- Modified Update method to check if the nextGoal was a treasure node 
+
+Path.cs
+-------
+- Created new methods: 
+      - insertNextNode() - Inserts a new NavNode to the nextNode
+      - removeNode() - removes a node from the path
+
+
+Create new class:
+Treasure.cs
+-----------
+- Overrides the Model3D class
+- When the object is created
+      - Initial scale is set to 100.
+      - Adds Object in the walls created by Prof. Barnes.
+      - Adds 3 more Objects in random positions around the world.
+
+Content Added & Modified
+--------------
+- treasurechest.x
+- darkBuilding.x
+- darkBuildingTexture.png
+- darkBuildingDoor.png
+- heightTexture.png
+- colorTexture.png
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
