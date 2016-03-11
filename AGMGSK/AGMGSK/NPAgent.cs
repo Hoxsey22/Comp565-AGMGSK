@@ -93,13 +93,22 @@ public class NPAgent : Agent {
        }
    }
 
-   public void newTreasureGoal(NavNode newNode)
+   /// <summary>
+   ///  Added a treasure to NPA's goal
+   /// </summary>
+   /// <param name="newTreasureNode">treasure</param>
+   public void newTreasureGoal(NavNode newTreasureNode)
    {
-       nextGoal = newNode;
-       treasureTarget = newNode;
+       nextGoal = newTreasureNode;
+       treasureTarget = newTreasureNode;
    }
 
-    public Vector3 FindClosestTreasure(Treasure t)    {
+    /// <summary>
+    /// Algorithm to find the nearest treasure
+    /// and returns an Object3D
+    /// </summary>
+    /// <param name="t">treasure</param>
+    public Vector3 findClosestTreasure(Treasure t)    {
         int nTreasures = t.Instance.Count;
         int closest = 0;
         float [] distances = new float[nTreasures];
@@ -130,6 +139,8 @@ public class NPAgent : Agent {
 				nextGoal.Translation.X/stage.Spacing, nextGoal.Translation.Y, nextGoal.Translation.Z/stage.Spacing, distance) );
       if (distance  <= snapDistance)  {  
          // snap to nextGoal and orient toward the new nextGoal 
+
+          // check if the treasure is the goal and if so remove once hit
           if(nextGoal == treasureTarget)  {
               path.removeNode(nextGoal);
               stage.getTreasure.Instance.Remove(treasureTargetObject);

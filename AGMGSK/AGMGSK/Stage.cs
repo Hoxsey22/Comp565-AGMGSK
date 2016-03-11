@@ -553,9 +553,9 @@ public class Stage : Game {
        else if (keyboardState.IsKeyDown(Keys.N) && !oldKeyboardState.IsKeyDown(Keys.N))
        {
            // closest treasure
-           Vector3 ct = npAgent.FindClosestTreasure(treasure);
+           Vector3 ct = npAgent.findClosestTreasure(treasure);
            // sends the closest treasure X and Z to find mark the treasure
-           npAgent.newTreasureGoal(npAgent.Path.InsertNextNode((int)ct.X/spacing,(int) ct.Z/spacing));
+           npAgent.newTreasureGoal(npAgent.Path.insertNextNode((int)ct.X/spacing,(int) ct.Z/spacing));
        } 
 
        oldKeyboardState = keyboardState;    // Update saved state.

@@ -154,8 +154,12 @@ public class Path : DrawableGameComponent {
                nextNode = 0; }    
          return n; }
       }
-
-   public NavNode InsertNextNode(int nodeX, int nodeZ)
+   /// <summary>
+   /// Method to insert a NavNode into the nextNode
+   /// </summary>
+   /// <param name="nodeX"> "node's X position" </param>
+   /// <param name="nodeY"> "node's Z position" </param>
+   public NavNode insertNextNode(int nodeX, int nodeZ)
    {
         int spacing = stage.Spacing;
         int x = nodeX;
@@ -164,10 +168,17 @@ public class Path : DrawableGameComponent {
                 NavNode.NavNodeEnum.WAYPOINT));
         return node[nextNode];
    }
+
+   /// <summary>
+   /// Method to remove a NavNode from the path
+   /// </summary>
+   /// <param name="removeThisNode"> "The node to remove" </param>
    public void removeNode(NavNode removeThisNode)
    {
-       node.Remove(removeThisNode);
-       nextNode--;
+       if (node.Remove(removeThisNode)) {
+           nextNode--;
+       }
+       
    }
 
 

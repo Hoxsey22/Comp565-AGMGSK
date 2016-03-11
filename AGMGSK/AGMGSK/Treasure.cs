@@ -47,18 +47,17 @@ namespace AGMGSKv7
 {
 
     /// <summary>
-    /// An example of how to override the MovableModel3D's Update(GameTime) to 
+    /// An example of how to override the Model3D's Update(GameTime) to 
     /// animate a model's objects.  The actual update of values is done by calling 
     /// each instance object and setting its (Pitch, Yaw, Roll, or Step property. 
     /// Then call base.Update(GameTime) method of MovableModel3D to apply transformations.
-    /// 
-    /// 1/5/2014  last changed
     /// </summary>
     public class Treasure : Model3D
     {
         private Random random;
         private Vector3 scale = new Vector3(100);
         private int heightSpacing = 75;
+
         // Constructor
         public Treasure(Stage stage, string label, string meshFile, int nTreasure)
             : base(stage, label, meshFile)
@@ -71,7 +70,7 @@ namespace AGMGSKv7
                 int z = (128 + random.Next(256)) * stage.Spacing;
                 addObject(
                     new Vector3(x, stage.surfaceHeight(x, z) + heightSpacing, z),
-                    Vector3.Up, 0.79f,
+                    Vector3.Up, 1.57f,
                     scale);
             }
         }
