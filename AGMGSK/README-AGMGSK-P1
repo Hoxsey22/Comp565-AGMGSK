@@ -19,16 +19,16 @@ Changes to the project
 
 Stage.cs
 ----------
-- Added building (Model3D) and treasure (Treasure) global objects
+- Added building (Model3D), treasure (Treasure), lerping (bool) global objects
 - Modified the setSurfaceHeight method in order to complete the lerp specification.
 - Created a new Model3D object buildings and treasure object in LoadContent()
-- Added new button state
+- Added new button states:
         - 'L' state to turn off and on lerping
         - 'N' state to turn on treasure finding for the NPA
 
 NPAgent.cs
 -------
-- Added treasureTarget (NavNode),treasureTargetObject (Object3D) as a global in the class
+- Added treasureTarget (NavNode), treasureTargetObject (Object3D) as a global in the class
 - Created new methods: 
       - newTreasureGoal() - change next goal to the treasure node
       - findClosestTreasure() - finds the nearest treasure and returns an Object3D
