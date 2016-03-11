@@ -6,18 +6,9 @@
  * and select Game Profile:  "Use HiDef".  
  * Do this once at initial project configuration.
  *
- * For all projects submission you should:
- * 1.  Delete the file game1.cs  from your project
- * 2.  Edit the last lines in this comment appropriately
- *			so that each group members name and email are listed alphabetically
- *				for example:
- *					Group member:  Mike Barnes  renzo@csun.edu
- *					Group member:  Iam Smart	IamSmart@mycsun.edu 
- *			the project is labeled
- *       the class and semester are specified
- *
  * 
- * Group member:  Mike Barnes
+ * Group member:  Joseph Hoxsey
+ * Group member:  Simon Grigorian
  * Project 1
  * Comp 565 Spring 2016
  */
