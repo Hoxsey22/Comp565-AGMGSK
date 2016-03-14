@@ -76,7 +76,7 @@ public class Player : Agent {
       if (keyboardState.IsKeyDown(Keys.R) && !oldKeyboardState.IsKeyDown(Keys.R)) 
          agentObject.Orientation = initialOrientation; 
       // allow more than one keyboardState to be pressed
-      if (keyboardState.IsKeyDown(Keys.Up)) agentObject.Step = agentObject.Step + 10;
+      if (keyboardState.IsKeyDown(Keys.Up)) agentObject.Step++; ;
       if (keyboardState.IsKeyDown(Keys.Down)) agentObject.Step--; 
       if (keyboardState.IsKeyDown(Keys.Left)) rotate++;
       if (keyboardState.IsKeyDown(Keys.Right)) rotate--;
