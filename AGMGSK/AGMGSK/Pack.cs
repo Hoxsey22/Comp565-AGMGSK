@@ -87,22 +87,72 @@ public class Pack : MovableModel3D {
         set { leader = value; }
     }
     public void freeRoam(Object3D dog)   {
-
+        
     }
     public void followTheLeader(Object3D dog)
     {
 
     }
     public Vector3 separationVector(Object3D dog)  {
-        return Vector3.Up; 
+
+        // init the variable needed
+        Vector3 separationVector = Vector3.Zero;
+        Vector3 otherDogPosition;
+        Vector3 newVector;
+        Vector3 dogPosition = new Vector3(dog.Translation.X, 0, dog.Translation.Z);
+        Vector3 leaderPosition = new Vector3(leader.Translation.X, 0, leader.Translation.Z);
+
+        // gets the distance between the passed dog and leader
+        float distance = Vector3.Distance(dog.Translation, leader.Translation);
+        float separationBoundingArea = 1000.0f;
+
+        // checks if the distance between dog and leader is less than the bounding area of the separatial force
+        if(distance < separationBoundingArea)    {
+            // Goes through all the dogs and adjusts new vector based on the position difference
+            foreach(Object3D oDogs in instance)   {
+                if(oDogs != dog)    {
+                    otherDogPosition = new Vector3(oDogs.Translation.X, 0, oDogs.Translation.Z);
+                    newVector = otherDogPosition - dogPosition;
+                    separationVector = separationVector - newVector;
+                }
+            }
+
+            newVector = leaderPosition - dogPosition;
+            separationVector = separationVector - newVector;
+            return Vector3.Normalize(separationVector);
+        }
+
+        return Vector3.Zero; 
     }
-    public Vector3 cohesionVector(Object3D dog)
-    {
-        return Vector3.Up;
+    public Vector3 cohesionVector(Object3D dog) {
+
+        // gets the distance between the passed dog and leader
+        float distance = Vector3.Distance(dog.Translation, leader.Translation);
+        float cohesionBoundingArea = 3000.0f;
+
+        // checks distance is greater than the cohesion bounding area if so adjust cohesion vector
+        if(distance > cohesionBoundingArea)    {
+            Vector3 dogPosition = new Vector3(dog.Translation.X, 0, dog.Translation.Z);
+            Vector3 leaderPosition = new Vector3(leader.Translation.X, 0, leader.Translation.Z);
+            Vector3 newVector = leaderPosition - dogPosition; 
+            
+            return Vector3.Normalize(newVector);
+        }
+        return Vector3.Zero;
+        
     }
     public Vector3 alignmentVector(Object3D dog)
     {
-        return Vector3.Up;
+        float alignmentStart = 1000.0f;
+        float alignmentEnd = 3000.0f;
+        float distance = Vector3.Distance(dog.Translation, leader.Translation);
+
+        Vector3 alignmentVector = new Vector3(leader.Forward.X, 0, leader.Forward.Z);
+
+        if((distance > alignmentStart) && (distance < alignmentEnd))    {
+            return Vector3.Normalize(alignmentVector);
+        }
+        return Vector3.Zero;
     }
 
 
