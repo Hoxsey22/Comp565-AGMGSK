@@ -43,11 +43,12 @@ namespace AGMGSKv7 {
 public class Pack : MovableModel3D {   
     Object3D leader;
     double [] probability = new double[] {
-        0.0f,
-        0.66f,
-        0.99f
+        0.0,
+        0.33,
+        0.66,
+        0.99
     };
-    int packingStatus = 0;
+    int packingLevel = 0;
     int nDogs = 0;
     
 
@@ -62,7 +63,7 @@ public class Pack : MovableModel3D {
    public Pack(Stage theStage, string label, string meshFile, int nDogs, int xPos, int zPos, Object3D theLeader)
       : base(theStage, label, meshFile) {
       isCollidable = true;
-		random = new Random();
+	    random = new Random();
       leader = theLeader;
 		int spacing = stage.Spacing;
 		// initial vertex offset of dogs around (xPos, zPos)
@@ -77,7 +78,7 @@ public class Pack : MovableModel3D {
 			}
         this.nDogs = nDogs;
       }
-
+    
     public int NumberOfDogs  {
         get { return nDogs; }
     }
@@ -86,14 +87,62 @@ public class Pack : MovableModel3D {
         get { return leader; }
         set { leader = value; }
     }
-    public void freeRoam(Object3D dog)   {
-        
-    }
-    public void followTheLeader(Object3D dog)
+    public Double Probability
     {
+        get { return probability[packingLevel]; }
+    }
+
+    public void freeRoam(Object3D dog)   {
+        float angle = 0.3f;
+
+        foreach (Object3D obj in instance) {
+            obj.Yaw = 0.0f;
+            // change direction 4 time a second  0.07 = 4/60
+            if ( random.NextDouble() < 0.07) {
+                if (random.NextDouble() < 0.5) dog.Yaw -= angle; // turn left
+                else  dog.Yaw += angle; // turn right
+            }
+        }
+    }
+
+    public void packing(Object3D dog)   {
+        float angle = (float)(Math.PI/180);
+        dog.Yaw = 0.0f;
+
+        Vector3 alignmentVector = getAlignmentVector(dog);
+        Vector3 cohesionVector = getCohesionVector(dog);
+        Vector3 separationVector = getSeparationVector(dog);
+        Vector3 dogForward = dog.Forward;
+        Vector3 flockingVector = alignmentVector + cohesionVector +separationVector;
+
+        if(flockingVector == Vector3.Zero)    {
+            return;
+        }
+
+        flockingVector.Normalize();
+        dogForward.Normalize();
+
+        if(Vector3.Distance(dogForward,flockingVector) <= 0.01) {
+            return;
+        }
+        if(Vector3.Distance(Vector3.Negate(dogForward),flockingVector) <= 0.01)    {
+            dogForward.X += 0.05f;
+            dogForward.Z += 0.05f;
+            dogForward.Normalize();
+        }
+
+        Vector3 AoR = Vector3.Cross(dogForward, flockingVector);
+        AoR.Normalize();
+
+        if (AoR.X + AoR.Y + AoR.Z < 0)
+        {
+            angle = -angle;
+        }
+
+        dog.Yaw += angle;
 
     }
-    public Vector3 separationVector(Object3D dog)  {
+    public Vector3 getSeparationVector(Object3D dog)  {
 
         // init the variable needed
         Vector3 separationVector = Vector3.Zero;
@@ -124,7 +173,7 @@ public class Pack : MovableModel3D {
 
         return Vector3.Zero; 
     }
-    public Vector3 cohesionVector(Object3D dog) {
+    public Vector3 getCohesionVector(Object3D dog) {
 
         // gets the distance between the passed dog and leader
         float distance = Vector3.Distance(dog.Translation, leader.Translation);
@@ -141,7 +190,7 @@ public class Pack : MovableModel3D {
         return Vector3.Zero;
         
     }
-    public Vector3 alignmentVector(Object3D dog)
+    public Vector3 getAlignmentVector(Object3D dog)
     {
         float alignmentStart = 1000.0f;
         float alignmentEnd = 3000.0f;
@@ -162,20 +211,18 @@ public class Pack : MovableModel3D {
    /// Supports leaderless and leader based "flocking" 
    /// </summary>      
    public override void Update(GameTime gameTime) {
-      // if (leader == null) need to determine "virtual leader from members"
-      float angle = 0.3f;
-      foreach (Object3D obj in instance) {
-         obj.Yaw = 0.0f;
-         // change direction 4 time a second  0.07 = 4/60
-         if ( random.NextDouble() < 0.07) {
-            if (random.NextDouble() < 0.5) obj.Yaw -= angle; // turn left
-            else  obj.Yaw += angle; // turn right
-            }
-         obj.updateMovableObject();
-         stage.setSurfaceHeight(obj);
-         }
+       foreach (Object3D dog in instance) {
+           if (random.NextDouble() < probability[packingLevel])
+               packing(dog);
+           else
+               freeRoam(dog);
+               
+           dog.updateMovableObject();
+               
+           stage.setSurfaceHeight(dog);
+       }
       base.Update(gameTime);  // MovableMesh's Update(); 
-      }
+   }
 
 
    public Object3D Leader {
