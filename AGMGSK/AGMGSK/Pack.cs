@@ -41,7 +41,15 @@ namespace AGMGSKv7 {
 /// 2/1/2016 last changed
 /// </summary>
 public class Pack : MovableModel3D {   
-   Object3D leader;
+    Object3D leader;
+    double [] probability = new double[] {
+        0.0f,
+        0.66f,
+        0.99f
+    };
+    int packingStatus = 0;
+    int nDogs = 0;
+    
 
 /// <summary>
 /// Construct a pack with an Object3D leader
@@ -67,7 +75,36 @@ public class Pack : MovableModel3D {
 						  new Vector3(0, 1, 0), 0.0f,
 						  new Vector3(scale, scale, scale));
 			}
+        this.nDogs = nDogs;
       }
+
+    public int NumberOfDogs  {
+        get { return nDogs; }
+    }
+
+    public Object3D Leader   {
+        get { return leader; }
+        set { leader = value; }
+    }
+    public void freeRoam(Object3D dog)   {
+
+    }
+    public void followTheLeader(Object3D dog)
+    {
+
+    }
+    public Vector3 separationVector(Object3D dog)  {
+        return Vector3.Up; 
+    }
+    public Vector3 cohesionVector(Object3D dog)
+    {
+        return Vector3.Up;
+    }
+    public Vector3 alignmentVector(Object3D dog)
+    {
+        return Vector3.Up;
+    }
+
 
    /// <summary>
    /// Each pack member's orientation matrix will be updated.
