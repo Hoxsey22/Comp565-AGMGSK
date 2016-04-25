@@ -51,26 +51,147 @@ public class NavNode : IComparable<NavNode> {
    private NavNodeEnum navigatable;
    private Vector3 nodeColor;
 
+
+   //added variables for project 2
+   private float x;
+   private float z;
+   private float distanceFS; //distance from source
+   private float distanceTG; //distance to goal
+   private float offset;
+   private float cost;
+   private List<NavNode> adjacent;
+   private NavNode predecessorNode;
 // constructors
 
    /// <summary>
    /// Make a VERTEX NavNode
    /// </summary>
    /// <param name="pos"> location of WAYPOINT</param>
+   /// 
+
+
+   //added getter / setter
+
+   public float DistanceFromSource
+   {
+       get { return distanceFS; }
+       set { distanceFS = value; }
+   }
+
+   public float DistanceToGoal
+   {
+       get { return distanceTG; }
+       set { distanceTG = value; }
+   }
+   
+
+   //edited methods for project 2
+   
+   public NavNode(Vector3 pos)
+   {
+       translation = pos;
+       Navigatable = NavNodeEnum.WAYPOINT;
+       x = pos.X;
+       z = pos.Z;
+       distanceFS = 0.0f;
+       distanceTG = 0.0f;
+       offset = 0.0f;
+       adjacent = new List<NavNode>();
+   }
+
+    /*
+   //original code
    public NavNode(Vector3 pos) {
       translation = pos;
       Navigatable = NavNodeEnum.WAYPOINT;
       }
+    */
 
    /// <summary>
    /// Make a WAYPOINT and set its Navigational type
    /// </summary>
    /// <param name="pos"> location of WAYPOINT</param>
    /// <param name="nType"> Navigational type {VERTEX, WAYPOINT, A_STAR, PATH} </param>
+   
+   /*//original code
    public NavNode(Vector3 pos, NavNodeEnum nType) {
       translation = pos;
       Navigatable = nType;
       }
+   */
+
+   public NavNode(Vector3 pos, NavNodeEnum nType)
+   {
+       translation = pos;
+       Navigatable = nType;
+       x = pos.X;
+       z = pos.Z;
+       distanceFS = 0.0f;
+       distanceTG = 0.0f;
+       offset = 0.0f;
+       adjacent = new List<NavNode>();
+   }
+
+   public NavNode(Vector3 pos, NavNodeEnum nType, float newOffset)
+   {
+       translation = pos;
+       Navigatable = nType;
+       x = pos.X;
+       z = pos.Z;
+       distanceFS = 0.0f;
+       distanceTG = 0.0f;
+       offset = newOffset;
+       adjacent = new List<NavNode>();
+   }
+
+   //Xcoord
+   public float X
+   {
+       get { return x; }
+       set { x = value; }
+   }
+
+   //Zcoord
+   public float Z
+   {
+       get { return z; }
+       set { z = value; }
+   }
+   
+   //Offset
+   public float Offset
+   {
+       get { return offset; }
+       set { offset = value; }
+   }
+
+   //adjacent node
+   public void addAdjacentNode(NavNode adjacentNode)
+   {
+       if (adjacentNode != null)
+       {
+           adjacent.Add(adjacentNode);
+       }
+   }
+
+   //cost
+   public float Cost
+   {
+       get { return cost; }
+       set { cost = value; }
+   }
+   //predecessorNode
+   public NavNode PredecessorNode
+   {
+       get { return predecessorNode; }
+       set { predecessorNode = value; }
+   }
+
+   //Adjacent
+   public List<NavNode> Adjacent
+   {
+       get { return adjacent; }
+   }
 
 // properties
 
@@ -116,4 +237,9 @@ public class NavNode : IComparable<NavNode> {
       }
       
    }
+   
+
+
+
+
 }
