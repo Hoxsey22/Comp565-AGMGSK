@@ -169,9 +169,7 @@ public class NavNode : IComparable<NavNode> {
    public void addAdjacentNode(NavNode adjacentNode)
    {
        if (adjacentNode != null)
-       {
            adjacent.Add(adjacentNode);
-       }
    }
 
    //cost
@@ -201,7 +199,7 @@ public class NavNode : IComparable<NavNode> {
    public Double Distance {
       get { return distance; }
       set { distance = value; }
-      }
+   }
 
    /// <summary>
    /// When changing the Navigatable type the WAYPOINT's nodeColor is 
@@ -216,11 +214,12 @@ public class NavNode : IComparable<NavNode> {
                case NavNodeEnum.OPEN     : nodeColor = Color.White.ToVector3();  break;  // white
                case NavNodeEnum.CLOSED   : nodeColor = Color.Red.ToVector3();    break;  // red
                }
-            }} 
+      }
+   } 
 
    public Vector3 Translation {
       get { return translation; }
-      }
+   }
 
 // methods
 
@@ -231,15 +230,14 @@ public class NavNode : IComparable<NavNode> {
    /// <param name="n"> goal node </param>
    /// <returns> usual comparison values:  -1, 0, 1 </returns>
    public int CompareTo(NavNode n) {
-      if (distance < n.Distance)       return -1;
-      else if (distance > n.Distance)  return  1;
-      else                             return  0;
+      if (distance < n.Distance)       
+          return -1;
+      else if (distance > n.Distance)  
+           return  1;
+      else                             
+           return  0;
       }
       
    }
-   
-
-
-
 
 }

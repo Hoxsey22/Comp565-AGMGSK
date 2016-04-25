@@ -96,7 +96,7 @@ namespace AGMGSKv7
             else
             {
                 Console.WriteLine("Node With Key: {0} Not Found", nodeKey);
-                return null;
+                return new NavNode(Vector3.Zero);
             }
         }
 

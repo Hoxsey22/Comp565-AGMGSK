@@ -369,7 +369,7 @@ public class Stage : Game {
             int zCoord;
 
             createQuadTree(range, nodeSpacing);
-			
+			/*
             foreach (Object3D obj in collidable)	{
 				
                 if (obj.Name.Contains("temple") || obj.Name.Contains("wall") || obj.Name.Contains("darkBuilding"))	{
@@ -386,7 +386,7 @@ public class Stage : Game {
                         }
                     }
                 }
-            }
+            }*/
             graph.createAdjacent();
         }
 		
@@ -499,6 +499,10 @@ public class Stage : Game {
          new Vector3(0, 1, 0), 0.78f, "redAvatarV6");  // face looking diagonally across stage
       player.IsCollidable = true; // test collisions for player
       Components.Add(player);
+      // create a treasure chest
+
+      treasure = new Treasure(this, "treasure", "treasurechest", 4);
+      Components.Add(treasure);
 
       npAgent = new NPAgent(this, "Evader",
          new Vector3(490 * spacing, terrain.surfaceHeight(490, 450), 450 * spacing),
@@ -517,10 +521,7 @@ public class Stage : Game {
 		pack = new Pack(this, "dog", "dogV6", 6, 450, 430, player.AgentObject);
 		Components.Add(pack);
 
-        // create a treasure chest
         
-       treasure = new Treasure(this, "treasure", "treasurechest",4);
-       Components.Add(treasure);
 
        // create building
 
