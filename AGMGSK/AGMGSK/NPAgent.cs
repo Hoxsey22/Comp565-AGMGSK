@@ -44,6 +44,12 @@ namespace AGMGSKv7 {
 /// 1/20/2016 last changed
 /// </summary>
 public class NPAgent : Agent {
+   //project 2 added variables
+   public float detectionRadius = 40000.0f;
+   
+   
+    
+    
    private NavNode nextGoal;
    private Path path;
    private NavNode treasureTarget;
@@ -108,7 +114,7 @@ public class NPAgent : Agent {
     /// and returns an Object3D
     /// </summary>
     /// <param name="t">treasure</param>
-    public Vector3 findClosestTreasure(Treasure t)    {
+    public Object3D findClosestTreasure(Treasure t)    {
         int nTreasures = t.Instance.Count;
         int closest = 0;
         float [] distances = new float[nTreasures];
@@ -118,8 +124,23 @@ public class NPAgent : Agent {
                 closest = i;
         }
         treasureTargetObject = t.Instance[closest];
-        return t.Instance[closest].Translation;
+        return t.Instance[closest];
 
+    }
+
+   public void treasureDetection()
+    {
+       Object3D tempTreasure = findClosestTreasure(this.stage.getTreasure);
+       float distance = Vector3.Distance(tempTreasure.Translation, this.agentObject.Translation);
+       if(distance < (tempTreasure.ObjectBoundingSphereRadius + detectionRadius))
+       {
+           NavNode closestNode = this.stage.graph.findClosestNavNodeInGraph(this.agentObject.Translation);
+           NavNode treasureNode = this.stage.graph.getNavNode((int)tempTreasure.Translation.X, (int)tempTreasure.Translation.Z);
+
+           Path aStarPath = new Path(this.stage, this.stage.graph.aStarPathFinding(closestNode, treasureNode), Path.PathType.SINGLE);
+
+           path = aStarPath;
+       }
     }
 
    /// <summary>
@@ -141,15 +162,13 @@ public class NPAgent : Agent {
          // snap to nextGoal and orient toward the new nextGoal 
 
           // check if the treasure is the goal and if so remove once hit
-          if(nextGoal == treasureTarget)  {
-              path.removeNode(nextGoal);
-              stage.getTreasure.Instance.Remove(treasureTargetObject);
-              treasureTarget = null;
-              treasureTargetObject = null;
-          }
+
+         
+
          nextGoal = path.NextNode;
          // agentObject.turnToFace(nextGoal.Translation);
          }
+      treasureDetection();
       base.Update(gameTime);  // Agent's Update();
       }
    } 
