@@ -22,6 +22,7 @@ Stage.cs
 -public void createGraph()
  -Creates nodes that are identified as walls, or objects, and used to later remove them from the graph 
  to avoid collision and have the a star navigate with only the available nodes.
+ 
  ***This is where we had trouble in the AStar navigation part of the project. We kept getting a null pointer
  reference for some reason for the treasure node. Please note it is commented out so avoid the game from 
  crashing.
@@ -45,7 +46,7 @@ NavGraph.cs
  
  Pack.cs
  -------
-Class used to create packing, and flocking behavior. Press P three times. 
+Class used to create packing, and flocking behavior. Pressing p increases the probability.
 
 
 
