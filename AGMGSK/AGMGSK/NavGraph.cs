@@ -174,42 +174,6 @@ namespace AGMGSKv7
         }
 
         /// <summary>
-        /// Method that goes through the entire graph removing all the NavNodes
-        /// that are of type Vertex.
-        /// </summary>
-        public void removeVertexNodes()
-        {
-            // Use a temporary dictionary to contain the valid NavNodes
-            Dictionary<String, NavNode> tempGraph = new Dictionary<string, NavNode>();
-
-            // Loop through the entire graph
-            foreach (KeyValuePair<String, NavNode> node in graph)
-            {
-                // If NavNode is not of type Vertex, add to temp graph
-                if (!(node.Value.Navigatable == NavNode.NavNodeEnum.VERTEX))
-                {
-                    tempGraph.Add(node.Key, node.Value);
-                }
-            }
-
-            graph = tempGraph;
-        }
-
-        /// <summary>
-        /// Method to print all the NavNodes in the graph to the console. 
-        /// The list printed is sorted by the keys of the graph.
-        /// </summary>
-        public void listNodeKeys()
-        {
-            SortedDictionary<String, NavNode> sortedList = new SortedDictionary<string, NavNode>(graph);
-            foreach (KeyValuePair<String, NavNode> node in sortedList)
-            {
-                Console.WriteLine("Key : {0}", node.Key);
-            }
-        }
-
-
-        /// <summary>
         /// Method that finds the closest NavNode from the given location.
         /// The NavNode is search from the existing NavNodes in the graph.
         /// </summary>
@@ -239,60 +203,6 @@ namespace AGMGSKv7
             return closestNode;
         }
 
-
-        /// <summary>
-        /// Method to draw the WAYPOINTS from the graph, this draw method
-        /// draws NavNodes that exist in the closed, open, and path sets
-        /// from the A* Algorithm.
-        /// </summary>
-        /// <param name="gameTime"></param>
-        public override void Draw(GameTime gameTime)
-        {
-            Matrix[] modelTransforms = new Matrix[stage.WayPoint3D.Bones.Count];
-
-            List<NavNode> nodes = new List<NavNode>();
-
-            // Add all the nodes that exist in the closed, open, path sets
-            nodes.AddRange(open);
-            nodes.AddRange(closed);
-            nodes.AddRange(path);
-
-            // Check if the aStarAlgorithm has been completed at least once
-            if (aStarCompleted)
-            {
-                // Loop through all the nodes in the drawing set of nodes
-                foreach (NavNode navNode in nodes)
-                {
-                    // draw the Path markers
-                    foreach (ModelMesh mesh in stage.WayPoint3D.Meshes)
-                    {
-                        stage.WayPoint3D.CopyAbsoluteBoneTransformsTo(modelTransforms);
-                        foreach (BasicEffect effect in mesh.Effects)
-                        {
-                            effect.EnableDefaultLighting();
-                            if (stage.Fog)
-                            {
-                                effect.FogColor = Color.CornflowerBlue.ToVector3();
-                                effect.FogStart = stage.FogStart;
-                                effect.FogEnd = stage.FogEnd;
-                                effect.FogEnabled = true;
-                            }
-                            else effect.FogEnabled = false;
-                            effect.DirectionalLight0.DiffuseColor = navNode.NodeColor;
-                            effect.AmbientLightColor = navNode.NodeColor;
-                            effect.DirectionalLight0.Direction = stage.LightDirection;
-                            effect.DirectionalLight0.Enabled = true;
-                            effect.View = stage.View;
-                            effect.Projection = stage.Projection;
-                            effect.World = Matrix.CreateTranslation(navNode.Translation) * modelTransforms[mesh.ParentBone.Index];
-                        }
-                        stage.setBlendingState(true);
-                        mesh.Draw();
-                        stage.setBlendingState(false);
-                    }
-                }
-            }
-        }
 
         /// <summary>
         /// Method that implements the A* Algorithm using the current graph
