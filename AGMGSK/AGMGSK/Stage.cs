@@ -118,6 +118,8 @@ public class Stage : Game {
 	// Stage variables
 	private TimeSpan time;  // if you need to know the time see Property Time
     public Pack pack;
+    public NavGraph graph;
+    public int nodeSpacing = 25;
 
 
    public Stage() : base() {
@@ -357,7 +359,7 @@ public class Stage : Game {
    protected override void Initialize() {
       // TODO: Add your initialization logic here
       base.Initialize();
-      }
+   }
       
    public void createGraph()	{
             int totalRadius;
@@ -366,7 +368,7 @@ public class Stage : Game {
             int xCoord;
             int zCoord;
 
-            quadTree(range, nodeSpacing);
+            createQuadTree(range, nodeSpacing);
 			
             foreach (Object3D obj in collidable)	{
 				
@@ -378,14 +380,14 @@ public class Stage : Game {
                     zCoord = (int)(obj.Translation.Z / spacing);
                     for (int x = xCoord - totalRadius; x < xCoord + totalRadius; x++)	{
                         for (int z = zCoord - totalRadius; z < zCoord + totalRadius; z++)	{
-                            if (x < range && x > 0 && z < range && z > 0 && (distance(x, xCoord, z, zCoord) < totalRadius))	{
+                            if (x < range && x > 0 && z < range && z > 0 && (getDistance(x, xCoord, z, zCoord) < totalRadius))	{
 								graph.removeNavNode(new NavNode(new Vector3(x * spacing, terrain.surfaceHeight(x, z), z * spacing)));
                             }
                         }
                     }
                 }
             }
-            graph.createAdjacents();
+            graph.createAdjacent();
         }
 		
         private float getDistance(int x1, int x2, int z1, int z2)	{
@@ -417,7 +419,7 @@ public class Stage : Game {
         }
 
         public void addNavNodes(int x1, int midX, int x2, int z1, int midZ, int z2)	{
-            float offset = distance(midX, x2, midZ, z2) * 150;
+            float offset = getDistance(midX, x2, midZ, z2) * 150;
 
             graph.addNavNode(new NavNode(new Vector3(midX * spacing, terrain.surfaceHeight(midX, midZ), midZ * spacing), NavNode.NavNodeEnum.WAYPOINT, offset)); // Middle Node
             graph.addNavNode(new NavNode(new Vector3(x1 * spacing, terrain.surfaceHeight(x1, z1), z1 * spacing), NavNode.NavNodeEnum.WAYPOINT, offset));     // Top Left
@@ -541,12 +543,10 @@ public class Stage : Game {
 		Cloud cloud = new Cloud(this, "cloud", "cloudV3", 20);
 		Components.Add(cloud);
 		Trace = string.Format("Scene created with {0} collidable objects.", Collidable.Count);
-      }
-      
+
       graph = new NavGraph(this);
       createGraph();
       Components.Add(graph);
-      
 }
   
    /// <summary>
