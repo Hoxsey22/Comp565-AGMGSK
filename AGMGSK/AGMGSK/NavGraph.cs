@@ -100,11 +100,18 @@ namespace AGMGSKv7
             }
         }
 
+        public void removeNavNode(NavNode removethisnode)   {
+            String nodeKey = stringKey((int)removethisnode.X, (int)removethisnode.Z);
+            if (graph.ContainsKey(nodeKey))
+                graph.Remove(nodeKey);
+        }
+
 
         public void addNavNode(NavNode newNode)
         {
             String nodeKey = stringKey((int)newNode.X, (int)newNode.Z);
-            if (!graph.ContainsKey(nodeKey)) { graph.Add(nodeKey, newNode); }
+            if (!graph.ContainsKey(nodeKey))
+                graph.Add(nodeKey, newNode);
         }
 
 
