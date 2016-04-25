@@ -1,1 +1,51 @@
+AGMGSK P2
+----------
+Author: Joseph Hoxsey & Simon Grigorian
+
+Description
+------------
+- Main goal of this project is to modify how the NPAgent navigates and the pack behavior for the dogs using flocking. 
+
+Specifications
+---------------
+1. Navigation for the NPAgent
+2. Treasure-directed path following with Graph generation and navigation
+3. Dog Pack Behavior
+
+----------------------------------------------------------------------------------------------------------------------------------
+
+Changes to the project
+----------------------
+
+Stage.cs
+----------
+-public void createGraph()
+ -Creates nodes that are identified as walls, or objects, and used to later remove them from the graph 
+ to avoid collision and have the a star navigate with only the available nodes.
+ ***This is where we had trouble in the AStar navigation part of the project. We kept getting a null pointer
+ reference for some reason for the treasure node. Please note it is commented out so avoid the game from 
+ crashing.
+
+NavNode.cs
+----------
+-Added information that contians about the navigation nodes and path to the treasures such as:
+cost, predecessornodes, adjacent, offset, z, x... etc.
+
+NPAgent.cs
+----------
+-NP agent override void update contains information of our treasureDetection() method which allows us to detect when we are
+near the treasure nav to use our AStar path. 
+
+
+Create new classes:
+NavGraph.cs
+ ------------
+ -This class was created to hold all the Dictionary (like HashMap) navigation nodes. It holds open,
+ closed, and path sets for the A star Algorithm.
+ 
+ Pack.cs
+ -------
+Class used to create packing, and flocking behavior. Press P three times. 
+
+
 
