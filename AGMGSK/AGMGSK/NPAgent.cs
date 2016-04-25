@@ -168,7 +168,7 @@ public class NPAgent : Agent {
          nextGoal = path.NextNode;
          // agentObject.turnToFace(nextGoal.Translation);
          }
-      treasureDetection();
+     // treasureDetection();
       base.Update(gameTime);  // Agent's Update();
       }
    } 
