@@ -117,6 +117,7 @@ public class Stage : Game {
 	private StreamWriter fout = null;
 	// Stage variables
 	private TimeSpan time;  // if you need to know the time see Property Time
+    public Pack pack;
 
 
    public Stage() : base() {
@@ -440,7 +441,7 @@ public class Stage : Game {
 		Components.Add(wall);
 		// create a pack for "flocking" algorithms
 		// create a Pack of 6 dogs centered at (450, 500) that is leaderless
-		Pack pack = new Pack(this, "dog", "dogV6", 6, 450, 430, null);
+		pack = new Pack(this, "dog", "dogV6", 6, 450, 430, player.AgentObject);
 		Components.Add(pack);
 
         // create a treasure chest
@@ -505,6 +506,8 @@ public class Stage : Game {
            fpsSecond = 0.0;
            inspector.setInfo(11, agentLocation(player));
            inspector.setInfo(12, agentLocation(npAgent));
+           inspector.setInfo(13, string.Format("Flocking Propability: {0}      Number of Dogs: {1}",
+                    pack.Probability, pack.NumberOfDogs));
            // inspector lines 13 and 14 can be used to describe player and npAgent's status
            inspector.setMatrices("player", "npAgent", player.AgentObject.Orientation, npAgent.AgentObject.Orientation);
        }
@@ -556,7 +559,11 @@ public class Stage : Game {
            Vector3 ct = npAgent.findClosestTreasure(treasure);
            // sends the closest treasure X and Z to find mark the treasure
            npAgent.newTreasureGoal(npAgent.Path.insertNextNode((int)ct.X/spacing,(int) ct.Z/spacing));
-       } 
+       }
+       else if (keyboardState.IsKeyDown(Keys.P) && !oldKeyboardState.IsKeyDown(Keys.P))
+       {
+           pack.Level = pack.Level + 1;
+       }
 
        oldKeyboardState = keyboardState;    // Update saved state.
        base.Update(gameTime);  // update all GameComponents and DrawableGameComponents
