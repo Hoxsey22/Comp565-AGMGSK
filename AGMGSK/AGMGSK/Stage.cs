@@ -358,6 +358,79 @@ public class Stage : Game {
       // TODO: Add your initialization logic here
       base.Initialize();
       }
+      
+   public void createGraph()	{
+            int totalRadius;
+            int npAgentRadius = (int)Math.Ceiling(npAgent.BoundingSphereRadius);
+            int radius;
+            int xCoord;
+            int zCoord;
+
+            quadTree(range, maxDistanceBetweenNavigableNodes);
+			
+            foreach (Object3D obj in collidable)	{
+				
+                if (obj.Name.Contains("temple") || obj.Name.Contains("wall") || obj.Name.Contains("darkBuilding"))	{
+                    radius = (int) obj.ObjectBoundingSphereRadius;
+
+                    totalRadius = (int)(npAgentRadius + radius + 150) / spacing;
+                    xCoord = (int)(obj.Translation.X / spacing);
+                    zCoord = (int)(obj.Translation.Z / spacing);
+                    for (int x = xCoord - totalRadius; x < xCoord + totalRadius; x++)	{
+                        for (int z = zCoord - totalRadius; z < zCoord + totalRadius; z++)	{
+                            if (x < range && x > 0 && z < range && z > 0 && (distance(x, xCoord, z, zCoord) < totalRadius))	{
+								graph.removeNavNode(new NavNode(new Vector3(x * spacing, terrain.surfaceHeight(x, z), z * spacing)));
+                            }
+                        }
+                    }
+                }
+            }
+            graph.createAdjacents();
+        }
+		
+        private float getDistance(int x1, int x2, int z1, int z2)	{
+            return (float)Math.Sqrt(Math.Pow(x2 - x1, 2) + Math.Pow(z2 - z1, 2));
+        }
+        
+        public void quadTree(int range, int halt)	{
+            quadTreePartition(2, 2, range - 2, range - 2, halt, 1);
+        }
+		
+        public void quadTreePartition(int x1, int z1, int x2, int z2, int halt, int level)
+        {
+            int midX = x1 + (x2 - x1) / 2;
+            int midZ = z1 + (z2 - z1) / 2;
+
+            if (((getDistance(midX, x2, midZ, z2) <= halt)))	{
+                addNavNodes(x1, midX, x2, z1, midZ, z2);
+                return;
+            }
+
+            else	{
+                quadTreePartition(x1, z1, midX, midZ, halt, level + 1);
+                quadTreePartition(x1, midZ, midX, z2, halt, level + 1);
+                quadTreePartition(midX, z1, x2, midZ, halt, level + 1);
+                quadTreePartition(midX, midZ, x2, z2, halt, level + 1);
+            }
+
+
+        }
+
+        public void addNavNodes(int x1, int midX, int x2, int z1, int midZ, int z2)
+        {
+            // Determine the offset between NavNodes, this is the diagnol offset
+            float offset = distance(midX, x2, midZ, z2) * 150;
+
+            graph.addNavNode(new NavNode(new Vector3(midX * spacing, terrain.surfaceHeight(midX, midZ), midZ * spacing), NavNode.NavNodeEnum.WAYPOINT, offset)); // Middle Node
+            graph.addNavNode(new NavNode(new Vector3(x1 * spacing, terrain.surfaceHeight(x1, z1), z1 * spacing), NavNode.NavNodeEnum.WAYPOINT, offset));     // Top Left
+            graph.addNavNode(new NavNode(new Vector3(midX * spacing, terrain.surfaceHeight(midX, z1), z1 * spacing), NavNode.NavNodeEnum.WAYPOINT, offset));     // Top Middle
+            graph.addNavNode(new NavNode(new Vector3(x2 * spacing, terrain.surfaceHeight(x2, z1), z1 * spacing), NavNode.NavNodeEnum.WAYPOINT, offset));     // Top Right
+            graph.addNavNode(new NavNode(new Vector3(x2 * spacing, terrain.surfaceHeight(x2, midZ), midZ * spacing), NavNode.NavNodeEnum.WAYPOINT, offset));     // Middle Right
+            graph.addNavNode(new NavNode(new Vector3(x2 * spacing, terrain.surfaceHeight(x2, z2), z2 * spacing), NavNode.NavNodeEnum.WAYPOINT, offset));     // Bottom Right
+            graph.addNavNode(new NavNode(new Vector3(midX * spacing, terrain.surfaceHeight(midX, z2), z2 * spacing), NavNode.NavNodeEnum.WAYPOINT, offset));     // Bottom Middle
+            graph.addNavNode(new NavNode(new Vector3(x1 * spacing, terrain.surfaceHeight(x1, z2), z2 * spacing), NavNode.NavNodeEnum.WAYPOINT, offset));     // Bottom Left
+            graph.addNavNode(new NavNode(new Vector3(x1 * spacing, terrain.surfaceHeight(x1, midZ), midZ * spacing), NavNode.NavNodeEnum.WAYPOINT, offset));     // Middle Left
+        }
 
 
    /// <summary>
@@ -471,6 +544,12 @@ public class Stage : Game {
 		Components.Add(cloud);
 		Trace = string.Format("Scene created with {0} collidable objects.", Collidable.Count);
       }
+      
+      graph = new NavGraph(this);
+      createGraph();
+      Components.Add(graph);
+      
+}
   
    /// <summary>
    /// UnloadContent will be called once per game and is the place to unload
