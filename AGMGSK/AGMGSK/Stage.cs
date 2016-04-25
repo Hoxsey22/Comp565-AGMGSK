@@ -366,7 +366,7 @@ public class Stage : Game {
             int xCoord;
             int zCoord;
 
-            quadTree(range, maxDistanceBetweenNavigableNodes);
+            quadTree(range, nodeSpacing);
 			
             foreach (Object3D obj in collidable)	{
 				
@@ -392,11 +392,11 @@ public class Stage : Game {
             return (float)Math.Sqrt(Math.Pow(x2 - x1, 2) + Math.Pow(z2 - z1, 2));
         }
         
-        public void quadTree(int range, int halt)	{
-            quadTreePartition(2, 2, range - 2, range - 2, halt, 1);
+        public void createQuadTree(int range, int halt)	{
+            quadTree(2, 2, range - 2, range - 2, halt, 1);
         }
 		
-        public void quadTreePartition(int x1, int z1, int x2, int z2, int halt, int level)
+        public void quadTree(int x1, int z1, int x2, int z2, int halt, int level)
         {
             int midX = x1 + (x2 - x1) / 2;
             int midZ = z1 + (z2 - z1) / 2;
@@ -407,18 +407,16 @@ public class Stage : Game {
             }
 
             else	{
-                quadTreePartition(x1, z1, midX, midZ, halt, level + 1);
-                quadTreePartition(x1, midZ, midX, z2, halt, level + 1);
-                quadTreePartition(midX, z1, x2, midZ, halt, level + 1);
-                quadTreePartition(midX, midZ, x2, z2, halt, level + 1);
+                quadTree(x1, z1, midX, midZ, halt, level + 1);
+                quadTree(x1, midZ, midX, z2, halt, level + 1);
+                quadTree(midX, z1, x2, midZ, halt, level + 1);
+                quadTree(midX, midZ, x2, z2, halt, level + 1);
             }
 
 
         }
 
-        public void addNavNodes(int x1, int midX, int x2, int z1, int midZ, int z2)
-        {
-            // Determine the offset between NavNodes, this is the diagnol offset
+        public void addNavNodes(int x1, int midX, int x2, int z1, int midZ, int z2)	{
             float offset = distance(midX, x2, midZ, z2) * 150;
 
             graph.addNavNode(new NavNode(new Vector3(midX * spacing, terrain.surfaceHeight(midX, midZ), midZ * spacing), NavNode.NavNodeEnum.WAYPOINT, offset)); // Middle Node
